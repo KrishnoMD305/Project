@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include<windows.h>
 
 char board[3][3] = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
@@ -82,6 +83,7 @@ void start_game() {
         scanf("%d", &mode);
         if (mode == 0) return;
         if (mode == 1 || mode == 2) break;
+        Beep(750,500);
         printf("Invalid selection. Try again: ");
     }
 
@@ -103,6 +105,7 @@ void start_game() {
         if (difficulty == 'e' || difficulty == 'E' || difficulty == 'm' || difficulty == 'M' || difficulty == 'h' || difficulty == 'H') {
             break;
         }
+        Beep(750,500);
         printf("Invalid difficulty level. Try again: ");
     }
 
@@ -122,7 +125,7 @@ void start_game() {
             if (mode == 1) {
                 char p1, p2;
                 if (moves == 0) {
-                    printf("Player 1 choose (X or O): ");
+                    printf("%s choose (X or O): ",name1);
 
                     bool k=true;
                     while(k){
@@ -130,16 +133,17 @@ void start_game() {
                         if(p1=='X' || p1=='O'){
                             k=false;
                         }else{
+                            Beep(750,500);
                             printf("Invalid!!! Try Again:");
                         }
                     }
                     p2 = (p1 == 'X') ? 'O' : 'X';
                 }
                 if (moves % 2 == 0) {
-                    printf("Player 1 (%c), your move: ", p1);
+                    printf("%s (%c), your move: ",name1, p1);
                     make_move(p1);
                 } else {
-                    printf("Player 2 (%c), your move: ", p2);
+                    printf("%s (%c), your move: ",name2, p2);
                     make_move(p2);
                 }
             } else if (mode == 2) {
@@ -151,6 +155,7 @@ void start_game() {
                         if(player=='X' || player=='O'){
                             f=false;
                         }else{
+                            Beep(750,500);
                             printf("Invalid!!! Try Again:");
                         }
                     }
@@ -172,18 +177,22 @@ void start_game() {
             if (check_win()) {
                 if (mode == 1) {
                     if (moves % 2 == 0) {
-                        printf("Player 1 wins this match!\n");
+                        printf("%s wins this match!\n",name1);
+                        printf("\a");
                         player_score += 10;
                     } else {
-                        printf("Player 2 wins this match!\n");
+                        printf("%s wins this match!\n",name2);
+                        printf("\a");
                         opponent_score += 10;
                     }
                 } else {
                     if (moves % 2 == 0) {
                         printf("Player wins this match!\n");
+                        printf("\a");
                         player_score += 10;
                     } else {
                         printf("Computer wins this match!\n");
+                        printf("\a");
                         opponent_score += 10;
                     }
                 }
@@ -192,6 +201,7 @@ void start_game() {
 
             if (check_draw()) {
                 printf("The match is a draw!\n");
+                Beep(750,1000);
                 player_score += 5;
                 opponent_score += 5;
                 break;
@@ -221,10 +231,13 @@ void start_game() {
 
     if(player_score>opponent_score){
         printf("Congratulation %s !!! You have won the game.\n",name1);
+        printf("\a\a");
     }else if(player_score<opponent_score){
         printf("Congratulation %s !!! You have won the game.\n",name2);
+        printf("\a\a");
     }else{
         printf("The match is a total draw!!!\n");
+        Beep(750,1000);
     }
 
     // Determine the final score and difficulty level
